@@ -1,6 +1,19 @@
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
+import { addSearchValue } from "../../redux/features/book/bookSlice";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 const Header = () => {
+  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
+  const handelSearch = (e) => {
+    e.preventDefault();
+    dispatch(addSearchValue(inputValue));
+  };
+  const handelSearchValue = (e) => {
+    setInputValue(e.target.value);
+    dispatch(addSearchValue(e.target.value));
+  };
   return (
     <nav className="py-4 2xl:px-6">
       <div className="container flex items-center justify-between">
@@ -19,7 +32,7 @@ const Header = () => {
           </Link>
         </ul>
 
-        <form className="flex items-center">
+        <form className="flex items-center" onSubmit={handelSearch}>
           <div className="group relative rounded-md bg-white">
             <svg
               width="20"
@@ -38,6 +51,8 @@ const Header = () => {
               placeholder="Filter books..."
               className="search"
               id="lws-search"
+              value={inputValue}
+              onChange={handelSearchValue}
             />
           </div>
         </form>
