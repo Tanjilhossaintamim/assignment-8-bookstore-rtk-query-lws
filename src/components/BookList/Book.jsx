@@ -1,9 +1,18 @@
 import PropTypes from "prop-types";
 import Star from "../rating/Star";
 import { useNavigate } from "react-router-dom";
+import { useDeleteBookMutation } from "../../redux/features/api/apiSlice";
+import { useEffect } from "react";
 const Book = ({ book }) => {
   const { id, name, author, thumbnail, price, rating, featured } = book;
   const navigate = useNavigate();
+  const [deleteBook, { isSuccess }] = useDeleteBookMutation();
+  const handelDelete = () => {
+    deleteBook(id);
+  };
+  useEffect(() => {
+    isSuccess && navigate("/");
+  }, [isSuccess, navigate]);
   return (
     <div className="book-card">
       <img className="h-[240px] w-[170px] object-cover" src={thumbnail} />
@@ -31,7 +40,7 @@ const Book = ({ book }) => {
                 />
               </svg>
             </button>
-            <button className="lws-deleteBook">
+            <button onClick={handelDelete} className="lws-deleteBook">
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
